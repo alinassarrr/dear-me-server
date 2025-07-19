@@ -5,8 +5,11 @@ namespace App\Services;
 use App\Models\Capsule;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use League\CommonMark\Reference\Reference;
 use function Symfony\Component\Clock\now;
+use Stevebauman\Location\Facades\Location;
 
 class CapsuleService
 {  
@@ -27,5 +30,27 @@ class CapsuleService
       }
       $capsules = $logic->orderByDesc('reveal_at')->get();
       return $capsules;
+   }
+
+   static function createCapsule(Request $request){
+      $publicIp = Http::get('https://api.ipify.org')->body();
+      $position = Location::get($publicIp)->countryName;
+
+      $capsule = new Capsule;
+      $capsule->user_id = Auth::id(); 
+      $capsule->mood_id = $request->mood_id;
+      $capsule->title = $request->title;
+      $capsule->message = $request->message;
+      $capsule->emoji = $request->emoji;
+      $capsule->security = $request->security;
+      $capsule->tags = $request->tags;
+      $capsule->surprise = $request->surprise;
+      $capsule->image_path = $request->image_path;
+      $capsule->audio_path = $request->audio_path;
+      $capsule->file_path = $request->file_path;
+      $capsule->location = $position;
+      $capsule->reveal_at = $request->reveal_at;
+      $capsule->save();
+      return $capsule;
    }
 }
