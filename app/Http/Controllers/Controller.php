@@ -6,6 +6,6 @@ use App\Traits\ResponseService;
 
 abstract class Controller
 {
-    
+
     use ResponseService;
 }
