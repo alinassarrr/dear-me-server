@@ -18,7 +18,7 @@ Route::group(["prefix"=>"v0.1"], function(){
     });
     Route::group(["prefix"=> "guest"], function(){
         Route::post("/login",[AuthController::class,"login"]);
-        // Route::post("/register","");
+        Route::post("/register",[AuthController::class,"register"]);
     });
 
 });
