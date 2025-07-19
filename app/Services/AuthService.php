@@ -2,18 +2,16 @@
 
 namespace App\Services;
 
+use App\Http\Requests\LoginValidationRequest;
+use App\Http\Requests\RegisterValidationRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
-    static function login(Request $request){
-        $request->validate([
-            'email'=>['required','string','email'],
-            'password'=>['required','string']
-        ]);
+    static function login(LoginValidationRequest $request){
+        $request->validated();
         $credentials = $request->only('email','password');
     
         $token = Auth::attempt($credentials);
@@ -25,12 +23,8 @@ class AuthService
         return $user;
     }
 
-    static function register(Request $request){
-        $request->validate([
-            "email"=>["required","string","email"],
-            "password"=>["required","string"],
-            "username"=> ["required","string"]
-        ]);
+    static function register(RegisterValidationRequest $request){
+        $request->validated();
         $user = new User; 
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
