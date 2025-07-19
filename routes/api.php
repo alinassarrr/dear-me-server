@@ -11,9 +11,8 @@ Route::group(["prefix"=>"v0.1"], function(){
         Route::group(["prefix"=> "public-wall"], function(){
             Route::post("/all",[CapsuleController::class,"getCapsules"]); //get capsules dynamically
         });
-        Route::group(["prefix"=> "profile"], function(){
-            // Route::get("/my-capsules","");
-
+        Route::group(["prefix"=> "create"], function(){
+            Route::post("/create",action: [CapsuleController::class,"createCapsule"]);
         });
     });
     Route::group(["prefix"=> "guest"], function(){
