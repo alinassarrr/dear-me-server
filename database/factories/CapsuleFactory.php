@@ -21,8 +21,6 @@ class CapsuleFactory extends Factory
             "user_id"=> 1,
             "mood_id"=> fake()->numberBetween(1,5),
             "title"=> fake()-> realText(12),
-            "reveal_date" => fake()->dateTimeBetween('now','+2 years')->format('Y-m-d'),
-            "reveal_time"=> fake()->time(),
             'message' =>fake()->realTextBetween(80,150),
             'emoji' => fake()->randomElement(['😊', '😢', '🎉', '🤔', '❤️', '🔥']),
             'tags' => json_encode(fake()->randomElement([['abc','2025'],['123','2024']]), JSON_UNESCAPED_UNICODE),
@@ -31,6 +29,7 @@ class CapsuleFactory extends Factory
             'image_path' => fake()->filePath(), 
             'audio_path' => null, 
             'file_path' => null,
+            'reveal_at'=>now(),
         ];
     }
 }
