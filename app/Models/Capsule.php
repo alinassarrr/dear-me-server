@@ -25,4 +25,10 @@ class Capsule extends Model
         'location',
         'reveal_at'
     ];
+    function user(){
+        return $this->belongsTo(User::class);
+    } 
+    function mood(){
+        return $this->belongsTo(Mood::class);
+    }
 }
