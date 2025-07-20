@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(["prefix"=>"v0.1"], function(){
     Route::group(["middleware"=> "auth:api"], function(){
         Route::group(["prefix"=> "public-wall"], function(){
-            Route::post("/all",[CapsuleController::class,"getCapsules"]); //get capsules dynamically
+            Route::post("/",[CapsuleController::class,"getCapsules"]); //get capsules dynamically
         });
         Route::group(["prefix"=> "create"], function(){
-            Route::post("/create",action: [CapsuleController::class,"createCapsule"]);
+            Route::post("/", [CapsuleController::class,"createCapsule"]);
+        });
+        Route::group(["prefix"=>"profile"],function(){
+            Route::get("/my-capsules",[CapsuleController::class,"getUsersCapsule"]);
         });
     });
     Route::group(["prefix"=> "guest"], function(){
