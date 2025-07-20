@@ -102,4 +102,9 @@ class CapsuleService
       
       return $capsules;
    }
+
+   static function deleteCapsule(Request $request,$id){
+      $deleted = Capsule::where('id',$id)->where('user_id',Auth::id())->delete();
+      return $deleted;
+   }
 }
