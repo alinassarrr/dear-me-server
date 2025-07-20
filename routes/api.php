@@ -15,7 +15,7 @@ Route::group(["prefix"=>"v0.1"], function(){
             Route::post("/", [CapsuleController::class,"createCapsule"]);
         });
         Route::group(["prefix"=>"profile"],function(){
-            Route::get("/my-capsules",[CapsuleController::class,"getUsersCapsule"]);
+            Route::get("/my-capsules",[CapsuleController::class,"getUserCapsules"]);
         });
     });
     Route::group(["prefix"=> "guest"], function(){
