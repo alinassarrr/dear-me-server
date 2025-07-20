@@ -31,7 +31,6 @@ class CapsuleService
       $capsules = $logic->orderByDesc('reveal_at')->get();
       return $capsules;
    }
-
    static function createCapsule(Request $request){
       $publicIp = Http::get('https://api.ipify.org')->body();
       $position = Location::get($publicIp)->countryName;
@@ -52,5 +51,30 @@ class CapsuleService
       $capsule->reveal_at = $request->reveal_at;
       $capsule->save();
       return $capsule;
+   }
+   static function getUserCapsules(Request $request){
+      $capsules= Capsule::with(['mood:id,value'])
+      ->where("user_id",Auth::id())
+      ->where("surprise",false)
+      ->orderByDesc('reveal_at')->get()
+      ->map(function ($capsule){
+         return [
+            'id'=>$capsule->id,
+            'user'=>"You",
+            'mood'=>$capsule->mood->value,
+            'title'=>$capsule->title,
+            'message'=>$capsule->message,
+            'emoji'=>$capsule->emoji,
+            'security'=>$capsule->security,
+            'tags'=>json_decode($capsule->tags),
+            'image_path'=>$capsule->image_path,
+            'audio_path'=>$capsule->audio_path,
+            'file_path'=>$capsule->file_path,
+            'location'=>$capsule->location,
+            'reveal_at'=>$capsule->reveal_at
+         ];
+      });
+      
+      return $capsules;
    }
 }
