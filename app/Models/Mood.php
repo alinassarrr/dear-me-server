@@ -10,4 +10,10 @@ class Mood extends Model
     //
     use HasFactory;
 
+
+
+     function capsules(){
+        return $this->hasMany(Capsule::class);
+    } 
+
 }
