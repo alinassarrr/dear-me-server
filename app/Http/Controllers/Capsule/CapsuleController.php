@@ -17,7 +17,7 @@ class CapsuleController extends Controller
             return $this->responseJSON($capsules);
         }
         catch(Exception $e){
-            return $this->responseJSON($e->getMessage(), 500,"failed");
+            return $this->responseJSON($e->getMessage(), 500,"error");
         }
     }
 
@@ -40,7 +40,7 @@ class CapsuleController extends Controller
             return $this->responseJSON($capsule);
         }
         catch(Exception $e){
-            return $this->responseJSON($e->getMessage(), 500,"failed");
+            return $this->responseJSON($e->getMessage(), 500,"error");
         }
     }
     
@@ -53,5 +53,12 @@ class CapsuleController extends Controller
             return $this->responseJSON($e->getMessage(),400,"error");
         }
        
+    }
+    function deleteCapsule(Request $request,$id){
+       $deleted = CapsuleService::deleteCapsule($request,$id);
+       if(!$deleted){
+        return $this->responseJSON("Failed to delete!",400,"failed");
+       }
+        return $this->responseJSON("Capsule deleted!");
     }
 }
