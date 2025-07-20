@@ -67,4 +67,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+
+    function capsules(){
+        return $this->hasMany(Capsule::class);
+    } 
+
 }
