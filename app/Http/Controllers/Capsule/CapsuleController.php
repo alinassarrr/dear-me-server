@@ -44,4 +44,14 @@ class CapsuleController extends Controller
         }
     }
     
+
+    function getUserCapsules(Request $request){
+        try{
+             $capsules = CapsuleService::getUserCapsules($request);
+             return $this->responseJSON($capsules);
+        }catch(Exception $e){
+            return $this->responseJSON($e->getMessage(),400,"error");
+        }
+       
+    }
 }
