@@ -25,6 +25,13 @@ class Capsule extends Model
         'location',
         'reveal_at'
     ];
+    protected $dates = [
+    'reveal_at',
+    'created_at',
+    'updated_at'
+];
+    protected $dateFormat = 'Y-m-d H:i:s'; // Prevent UTC conversion
+
     function user(){
         return $this->belongsTo(User::class);
     } 
