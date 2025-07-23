@@ -55,15 +55,25 @@ class CapsuleService
       return $capsules;
    }
    public static function fileSave($file,$type){
-      // only extracted extensio by ai 
+     
+    if (empty($file)) {
+        return null;
+    }
+
+    try {
+       // only extracted extensio by ai 
        // Extract mime type and extension
-      $mimeType = explode(';', explode(':', $file)[1])[0];
-      $extension = explode('/', $mimeType)[1];
-      
-      $fileData = base64_decode(explode(',', $file)[1]);            
-      $filename =`capsules/{$type}/`.Str::random(40).'.'.$extension;
-      Storage::disk('public')->put($filename, $fileData);
-      return $filename;
+        $mimeType = explode(';', explode(':', $file)[1])[0];
+        $extension = explode('/', $mimeType)[1];
+        
+        $fileData = base64_decode(explode(',', $file)[1]);            
+        $filename = "capsules/{$type}/".Str::random(40).'.'.$extension;
+        Storage::disk('public')->put($filename, $fileData);
+        return $filename;
+         } catch (Exception $e) {
+        Log::error("Failed to save {$type} file: ".$e->getMessage());
+        return null;
+    }
    }
    static function createCapsule(Request $request){
       $capsule = new Capsule;
