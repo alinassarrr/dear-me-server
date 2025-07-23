@@ -113,7 +113,7 @@ class CapsuleService
             'file_path'=>$capsule->file_path,
             'location'=>$capsule->location,
             'reveal_at'=>$capsule->reveal_at,
-            'revealed'=> ($capsule->reveal_at <= Carbon::now('Asia/Beirut')),
+            'revealed'=> ($capsule->reveal_at <= Carbon::now(timezone: 'Asia/Beirut')),
             'created_at'=>$capsule->created_at,
             
          ];
