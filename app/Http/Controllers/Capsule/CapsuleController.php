@@ -29,7 +29,7 @@ class CapsuleController extends Controller
             'message' => 'required|string',
             'emoji' => 'required|string',
             'security' => 'required|in:private,public,unlisted',
-            'tags' => 'required|json    ',
+            'tags' => 'required|json',
             'surprise' => 'required|boolean',
             'reveal_at' => 'required|date|after:now',
             'image_path' => 'nullable|string',

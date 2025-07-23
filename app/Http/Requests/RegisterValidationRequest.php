@@ -34,7 +34,6 @@ class RegisterValidationRequest extends FormRequest
             "email.email"=> "Enter Valid Email",
             "password.min"=>"Password must be at least 5 characters",
             'email.unique' => 'This email is already registered. Try logging in instead.',
-
         ];
     }
 }
