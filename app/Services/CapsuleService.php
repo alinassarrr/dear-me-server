@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use League\CommonMark\Reference\Reference;
 use function Symfony\Component\Clock\now;
 use Stevebauman\Location\Facades\Location;
@@ -52,7 +54,17 @@ class CapsuleService
       });
       return $capsules;
    }
-  
+   public static function fileSave($file,$type){
+      // only extracted extensio by ai 
+       // Extract mime type and extension
+      $mimeType = explode(';', explode(':', $file)[1])[0];
+      $extension = explode('/', $mimeType)[1];
+      
+      $fileData = base64_decode(explode(',', $file)[1]);            
+      $filename =`capsules/{$type}/`.Str::random(40).'.'.$extension;
+      Storage::disk('public')->put($filename, $fileData);
+      return $filename;
+   }
    static function createCapsule(Request $request){
       $capsule = new Capsule;
       $capsule->user_id = Auth::id(); 
@@ -63,11 +75,13 @@ class CapsuleService
       $capsule->security = $request->security;
       $capsule->tags = $request->tags;
       $capsule->surprise = $request->surprise;
-      $capsule->image_path = $request->image_path;
-      $capsule->audio_path = $request->audio_path;
-      $capsule->file_path = $request->file_path;
+     
       $capsule->location = null;
       $capsule->reveal_at = $request->reveal_at;
+      
+      $capsule->image_path = self::fileSave ($request->image_path,"images");;
+      $capsule->audio_path = self::fileSave($request->audio_path, "audio");
+      $capsule->file_path = self::fileSave($request->file_path,"files");
       $capsule->save();
 
       // it is taking too much time so we separate it save first with location null and in the background change the location
@@ -78,6 +92,7 @@ class CapsuleService
       }
       return $capsule;
    }
+  
    static function getUserCapsules(Request $request){
       $capsules= Capsule::with(['mood:id,value'])
       ->where("user_id",Auth::id())
